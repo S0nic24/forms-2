@@ -5,7 +5,6 @@ function Form({ onSave, editDate, editDistance, isEditing }) {
   const [distance, setDistance] = useState('');
   const [error, setError] = useState('');
 
-  // Синхронизация с App при клике на редактирование
   useEffect(() => {
     setDate(editDate);
     setDistance(editDistance);
@@ -15,7 +14,6 @@ function Form({ onSave, editDate, editDistance, isEditing }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Валидация: ДД.ММ.ГГ (ровно 2 цифры, точка, 2 цифры, точка, 2 цифры)
     const dateRegex = /^\d{2}\.\d{2}\.\d{2}$/;
     if (!dateRegex.test(date)) {
       setError('Формат даты: ДД.ММ.ГГ');
@@ -24,14 +22,13 @@ function Form({ onSave, editDate, editDistance, isEditing }) {
 
     const dist = parseFloat(distance);
     if (isNaN(dist) || dist <= 0) {
-      setError('Введите положительное число км');
+      setError('Введите корректное расстояние');
       return;
     }
 
     setError('');
     onSave(date, dist);
 
-    // Очистка формы, если это было добавление (не редактирование)
     if (!isEditing) {
       setDate('');
       setDistance('');
