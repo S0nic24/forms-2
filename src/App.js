@@ -9,10 +9,8 @@ function App() {
   const [editDate, setEditDate] = useState('');
   const [editDistance, setEditDistance] = useState('');
 
-  // Логика добавления или обновления
   const handleSave = (date, distance) => {
     if (editId !== null) {
-      // Редактирование существующей записи
       setTrainings((prev) =>
         prev.map((t) => (t.id === editId ? { ...t, date, distance } : t))
       );
@@ -20,7 +18,6 @@ function App() {
       setEditDate('');
       setEditDistance('');
     } else {
-      // Проверка на дубликат даты
       const existing = trainings.find((t) => t.date === date);
       if (existing) {
         setTrainings((prev) =>
@@ -44,7 +41,6 @@ function App() {
     setEditDistance(String(training.distance));
   };
 
-  // Сортировка по убыванию даты
   const sortedTrainings = [...trainings].sort((a, b) => {
     const dateA = new Date(a.date.split('.').reverse().join('-'));
     const dateB = new Date(b.date.split('.').reverse().join('-'));
