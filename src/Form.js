@@ -11,18 +11,33 @@ function Form({ onSave, editDate, editDistance, isEditing }) {
     setError('');
   }, [editDate, editDistance]);
 
+  const handleDateChange = (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+
+    if (value.length > 6) {
+      value = value.slice(0, 6);
+    }
+
+    if (value.length > 2 && value.length <= 4) {
+      value = `${value.slice(0, 2)}.${value.slice(2)}`;
+    } else if (value.length > 4) {
+      value = `${value.slice(0, 2)}.${value.slice(2, 4)}.${value.slice(4)}`;
+    }
+
+    setDate(value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    const dateRegex = /^\d{2}\.\d{2}\.\d{2}$/;
-    if (!dateRegex.test(date)) {
-      setError('Формат даты: ДД.ММ.ГГ');
+    if (date.length !== 8) {
+      setError('Введите дату полностью (ДД.ММ.ГГ)');
       return;
     }
 
     const dist = parseFloat(distance);
     if (isNaN(dist) || dist <= 0) {
-      setError('Введите корректное расстояние');
+      setError('Введите положительное число км');
       return;
     }
 
@@ -43,7 +58,7 @@ function Form({ onSave, editDate, editDistance, isEditing }) {
           type="text"
           placeholder="ДД.ММ.ГГ"
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={handleDateChange}
         />
       </div>
       <div className="input-group">
